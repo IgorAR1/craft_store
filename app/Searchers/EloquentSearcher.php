@@ -10,7 +10,7 @@ class EloquentSearcher implements Searcher
 {
     public function search(string $query, Builder $builder): Builder
     {
-        return  $builder;
+        return  $builder->where('title', 'LIKE', '%' . $query . '%');
     }
 
     public function saveDocument($params): void
