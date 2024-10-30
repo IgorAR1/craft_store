@@ -2,12 +2,25 @@
 
 namespace App\Console\Commands;
 
+use App\Contracts\Searcher;
 use App\Facades\Elasticsearch;
+use App\Jobs\IndexingJob;
 use App\Models\Product;
+use App\Searchers\Searchable;
+use Elastic\Elasticsearch\Client;
 use Illuminate\Console\Command;
+use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 
 class IndexingCommand extends Command
 {
+    public function __construct(public Searcher $searcher)
+    {
+        parent::__construct();
+    }
+
     /**
      * The name and signature of the console command.
      *
@@ -26,19 +39,45 @@ class IndexingCommand extends Command
      * Execute the console command.
      */
 
-    public function handle()
+    public function handle(): void
     {
         $this->info('Indexing all articles. This might take a while...');
-        foreach (Product::all() as $product)
+
+        foreach ($this->getModels() as  $model)
         {
-            Elasticsearch::index([
-                'index' => $product->getTable(),
-                'type' => $product->getTable(),
-                'id' => $product->getKey(),
-                'body'  => $product->toArray()
-            ]);
             $this->output->write('.');
+
+            if (in_array(Searchable::class,class_uses($model))) {
+                IndexingJob::dispatch($model);
+            }
         }
-        $this->info('\nDone!');
+
+        $this->info("\n".'Done!');
+    }
+
+    private function getModels(): Collection
+    {
+        $models = collect(File::allFiles(app_path()))
+            ->map(function ($item) {
+                $path = $item->getRelativePathName();
+
+                return sprintf('\%s%s',
+                    Container::getInstance()->getNamespace(),
+                    strtr(substr($path, 0, strrpos($path, '.')), '/', '\\'));
+
+            })
+            ->filter(function ($class) {
+                $valid = false;
+
+                if (class_exists($class)) {
+                    $reflection = new \ReflectionClass($class);
+                    $valid = $reflection->isSubclassOf(Model::class) &&
+                        !$reflection->isAbstract();
+                }
+
+                return $valid;
+            });
+
+        return $models->values();
     }
 }

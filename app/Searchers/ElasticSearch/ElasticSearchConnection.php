@@ -21,6 +21,7 @@ class ElasticSearchConnection
 
     private function getConfig(): array
     {
+//        dd(config('elasticsearch'));
         return config('elasticsearch');
     }
 }

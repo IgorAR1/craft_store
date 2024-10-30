@@ -10,7 +10,7 @@ interface Searcher//Возвращать array или builder?
 {
     public function search(string $query,Builder $builder): Builder; //array?;
 
-    public function saveDocument($params): void;
+    public function saveDocument(Model $model): void;
 
-    public function removeDocument($params): void;
+    public function removeDocument(Model $model): void;
 }

@@ -5,7 +5,6 @@ namespace App\Searchers;
 use App\Contracts\Searcher;
 use App\Observers\IndexingObserver;
 use Illuminate\Database\Eloquent\Builder;
-use function Symfony\Component\String\b;
 
 trait Searchable
 {
@@ -16,7 +15,6 @@ trait Searchable
     }
     public function scopeSearch(Builder $builder,string $query): Builder
     {
-
         $this->searchUsing()->search($query, $builder);
 
         return $builder;
@@ -33,40 +31,36 @@ trait Searchable
     }
 
     public function searchUsing(): Searcher{
+
         return app(Searcher::class);
     }
 
     public function makeSearchable(): void
     {
-        //Использовать type, индекс не нужно делать соответсвующим имени таблицы
-        $params = [
-            'index' => 'models',
-            'type' => $this->indexingAs(),
-            'id' => $this->getKey(),
-            'body' => $this->getSearchableBody()
-        ];
-
-        $this->searchUsing()->saveDocument($params);
+        $this->searchUsing()->saveDocument($this);
     }
 
     public function makeUnsearchable(): void
     {
-        $params = [
-            'index' => 'models',
-            'id' => $this->getKey(),
-        ];
-        $this->searchUsing()->removeDocument($params);
+        $this->searchUsing()->removeDocument($this);
     }
 
-    public function indexModel()
+    public function scopeIndexModel(Builder $builder): void
     {
-//        $builder->chunkById()
-//        $documents = static::all();
-//        $documents->
+        $builder->chunkById(100,function ($models){
+            $models->each(fn($model) => $model->makeSearchable());
+        });
     }
 
-//    private function getBuilders(Builder $builder, array $ids): Builder
-//    {
-//        return $builder->whereIn('id',$ids);
-//    }
+    public function scopeUnindexModel(Builder $builder): void
+    {
+        $builder->chunkById(100,function ($models){
+            $models->each(fn($model) => $model->makeUnSearchable());
+        });
+    }
+
+    public function getSearchable():array
+    {
+        return $this->searchableProperty;
+    }
 }

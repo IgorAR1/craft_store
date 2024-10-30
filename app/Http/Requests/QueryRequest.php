@@ -11,7 +11,7 @@ class QueryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['nullable', 'string'],
+            'search' => ['string'],
             'sort' => ['nullable', 'string'],
             'filter' => ['nullable', 'string'],
         ];
@@ -32,18 +32,12 @@ class QueryRequest extends FormRequest
     }
     public function getSortDirection()
     {
-        $direction = $this->input('direction');
-
-        if (!$direction){
-            $direction = 'asc';
-        }
-
-        return $direction;
+        return $this->input('direction') ?: 'asc';
     }
 
     public function getSearchQuery()
     {
-        return collect($this->input('search'));
+        return $this->input('search') ?: '';
     }
 
 }

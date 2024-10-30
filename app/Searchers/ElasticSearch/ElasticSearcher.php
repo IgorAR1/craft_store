@@ -31,11 +31,12 @@ final class ElasticSearcher implements Searcher
     private function resolveSearchingParams(string $query,Model $model): array
     {
         return [
-            'index' => $model->indexingAs(),
+            'index' => 'models',
+            'type' => $model->getTable(),
             'body'  => [
                 'query' => [
                     'multi_match' => [
-                        'fields' => $model->searchable,
+                        'fields' => $model->getSearchable(),
                         'query' => $query,
                     ],
                 ]
@@ -53,13 +54,27 @@ final class ElasticSearcher implements Searcher
         return $builder->whereIn('id',$this->getIdsFromResult($result));
     }
 
-    public function saveDocument($params): void
+    public function saveDocument(Model $model): void
     {
+        $params = $this->resolveIndexingParam($model);
+
         $this->elasticsearch->index($params);
     }
 
-    public function removeDocument($params): void
+    public function removeDocument(Model $model): void
     {
-        $this->elasticsearch->index($params);
+        $params = $this->resolveIndexingParam($model);
+
+        $this->elasticsearch->delete($params);//??????
+    }
+
+    private function resolveIndexingParam(Model $model): array
+    {
+        return [
+            'index' => 'models',
+            'type' => $model->indexingAs(),
+            'id' => $model->getKey(),
+            'body' => $model->getSearchableBody()
+        ];
     }
 }

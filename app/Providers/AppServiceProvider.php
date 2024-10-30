@@ -24,10 +24,11 @@ class AppServiceProvider extends ServiceProvider
 
 //        $this->app->bind('log',ActivityLogger::class);
 //        $this->app->bind(Searcher::class,ElasticSearcher::class);
-        $this->app->bind(Searcher::class,EloquentSearcher::class);
+        $this->app->singleton(Searcher::class,ElasticSearcher::class);
+
         $this->app->bind('elasticsearch',Client::class);
         $this->app->bind(Sorter::class,QuerySorter::class);
-        $this->app->singleton(Client::class,fn() =>
+        $this->app->bind(Client::class,fn() =>
             app(ElasticSearchConnection::class)->createConnection());
     }
     /**
