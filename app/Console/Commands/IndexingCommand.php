@@ -3,11 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Contracts\Searcher;
-use App\Facades\Elasticsearch;
 use App\Jobs\IndexingJob;
-use App\Models\Product;
 use App\Searchers\Searchable;
-use Elastic\Elasticsearch\Client;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;

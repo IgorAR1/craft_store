@@ -12,7 +12,6 @@ class IndexingObserver
     {
         $model->makeSearchable();
 
-//        dispatch(IndexingJob::dispatch()->onQueue());
     }
     public function deleted($model): void
     {

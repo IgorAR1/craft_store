@@ -21,14 +21,13 @@ class ProductController extends Controller
 
     public function index(){
 
+//        Elasticsearch::indices()->delete(['index' => 'models']);
         $products = $this->productService->getProductsForView();
 
         return ProductResource::collection($products);
     }
 
     public function show(Product $product){
-
-        // $product = Product::findOrFail($product_id);
 
         return new ProductResource($product);
     }

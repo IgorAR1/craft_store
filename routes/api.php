@@ -9,7 +9,6 @@ use App\Http\Controllers\CreateGuestUuid;
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Cart\CartController;
 use App\Http\Controllers\Api\Cart\ChangeCartProductController;
 use App\Http\Controllers\Api\Cart\ClearCartController;
 use App\Http\Controllers\Api\Cart\ShowCartController;

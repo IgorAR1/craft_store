@@ -15,9 +15,9 @@ trait Searchable
     }
     public function scopeSearch(Builder $builder,string $query): Builder
     {
-        $this->searchUsing()->search($query, $builder);
+        $result = $this->searchUsing()->search($query, $builder);
 
-        return $builder;
+        return $builder->whereIn('id',$result);
     }
 
     public function indexingAs(): string
@@ -30,8 +30,8 @@ trait Searchable
         return collect($this)->only($this->searchableProperty);
     }
 
-    public function searchUsing(): Searcher{
-
+    public function searchUsing(): Searcher
+    {
         return app(Searcher::class);
     }
 
@@ -63,4 +63,5 @@ trait Searchable
     {
         return $this->searchableProperty;
     }
+
 }

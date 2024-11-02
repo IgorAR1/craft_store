@@ -4,11 +4,10 @@ namespace App\Services;
 
 use App\Http\Requests\QueryRequest;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
 
 class ProductService
 {
-    public function __construct(private readonly QueryRequest $queryRequest)
+    public function __construct(readonly QueryRequest $queryRequest)
     {
     }
 

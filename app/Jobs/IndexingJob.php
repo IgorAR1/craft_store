@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Facades\Elasticsearch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Queue\Queueable;
@@ -25,6 +26,5 @@ class IndexingJob implements ShouldQueue
     public function handle(): void
     {
         $this->model::indexModel();
-
     }
 }

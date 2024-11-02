@@ -19,13 +19,14 @@ final class ElasticSearcher implements Searcher
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search(string $query,Builder $builder): Builder
+    public function search(string $query,Builder $builder): array
     {
         $params = $this->resolveSearchingParams($query,$builder->getModel());
 
         $result = $this->elasticsearch->search($params);
 
-        return $this->getResultingQueryBuilder($builder, $result);
+//        return $this->getResultingQueryBuilder($builder, $result);//Точно билдр возвращать - может ids?
+        return $this->getIdsFromResult($result);
     }
 
     private function resolveSearchingParams(string $query,Model $model): array
@@ -49,10 +50,10 @@ final class ElasticSearcher implements Searcher
         return Arr::pluck($result['hits']['hits'],'_id');
     }
 
-    private function getResultingQueryBuilder($builder,$result): Builder
-    {
-        return $builder->whereIn('id',$this->getIdsFromResult($result));
-    }
+//    private function getResultingQueryBuilder($builder,$result): Builder
+//    {
+//        return $builder->whereIn('id',$this->getIdsFromResult($result));
+//    }
 
     public function saveDocument(Model $model): void
     {

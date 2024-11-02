@@ -42,7 +42,6 @@ abstract class QueryFilter
 
                 return;
             }
-//Можно вынести isRelationship() сюда - если true - писать в relationship[] и потом уже циклом обработать
             $this->filter($builder,$property,$values);
         });
     }

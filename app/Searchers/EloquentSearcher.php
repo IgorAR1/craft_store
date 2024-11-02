@@ -8,17 +8,19 @@ use Illuminate\Database\Eloquent\Collection;
 
 class EloquentSearcher implements Searcher
 {
-    public function search(string $query, Builder $builder): Builder
+    public function search(string $query, Builder $builder): array
     {
-        return  $builder->where('title', 'LIKE', '%' . $query . '%');
+//        TODO : вернуть массив id
+        return [];
+//        return  $builder->where('title', 'LIKE', '%' . $query . '%');
     }
 
-    public function saveDocument($params): void
+    public function saveDocument($model): void
     {
         // TODO: Implement saveDocument() method.
     }
 
-    public function removeDocument($params): void
+    public function removeDocument($model): void
     {
         // TODO: Implement removeDocument() method.
     }
