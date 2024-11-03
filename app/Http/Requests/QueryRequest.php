@@ -10,10 +10,14 @@ class QueryRequest extends FormRequest
 
     public function rules(): array
     {
+//        dd($this->all());
         return [
             'search' => ['string'],
             'sort' => ['nullable', 'string'],
-            'filter' => ['nullable', 'string'],
+
+            'filter' => ['array'],
+            'filter.*' => ['array'],
+            'filter.*.*' => ['string'],
         ];
     }
     public function getFilterQueryProperty()

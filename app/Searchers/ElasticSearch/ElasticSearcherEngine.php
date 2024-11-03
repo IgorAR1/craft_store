@@ -2,7 +2,7 @@
 
 namespace App\Searchers\ElasticSearch;
 
-use App\Contracts\Searcher;
+use App\Contracts\SearcherEngine;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-final class ElasticSearcher implements Searcher
+final class ElasticSearcherEngine implements SearcherEngine
 {
     public function __construct(public Client $elasticsearch)
     {}

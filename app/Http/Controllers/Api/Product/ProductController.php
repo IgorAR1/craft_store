@@ -8,7 +8,7 @@ use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Searchers\ElasticSearch\ElasticSearcher;
+use App\Searchers\ElasticSearch\ElasticSearcherEngine;
 use App\Services\ProductService;
 use Elastic\Elasticsearch\Client;
 use Illuminate\Support\Arr;

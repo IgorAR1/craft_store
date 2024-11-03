@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Contracts\Searcher;
+use App\Contracts\SearcherEngine;
 use App\Filters\QueryFilter;
 use App\Filters\QueryFilterExact;
 use App\Searchers\ElasticSearch\ElasticSearchConnection;
-use App\Searchers\ElasticSearch\ElasticSearcher;
-use App\Searchers\EloquentSearcher;
+use App\Searchers\ElasticSearch\ElasticSearcherEngine;
+use App\Searchers\EloquentSearcherEngine;
 use App\Sorters\QuerySorter;
 use App\Sorters\Sorter;
 use Elastic\Elasticsearch\Client;
@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
 //        $this->app->bind('log',ActivityLogger::class);
 //        $this->app->bind(Searcher::class,ElasticSearcher::class);
-        $this->app->singleton(Searcher::class,ElasticSearcher::class);
+        $this->app->singleton(SearcherEngine::class,ElasticSearcherEngine::class);
 
         $this->app->bind('elasticsearch',Client::class);
         $this->app->bind(Sorter::class,QuerySorter::class);

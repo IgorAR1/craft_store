@@ -2,11 +2,11 @@
 
 namespace App\Searchers;
 
-use App\Contracts\Searcher;
+use App\Contracts\SearcherEngine;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class EloquentSearcher implements Searcher
+class EloquentSearcherEngine implements SearcherEngine
 {
     public function search(string $query, Builder $builder): array
     {

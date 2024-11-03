@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Contracts\Searcher;
+use App\Contracts\SearcherEngine;
 use App\Jobs\IndexingJob;
 use App\Searchers\Searchable;
 use Illuminate\Console\Command;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\File;
 
 class IndexingCommand extends Command
 {
-    public function __construct(public Searcher $searcher)
+    public function __construct(public SearcherEngine $searcher)
     {
         parent::__construct();
     }

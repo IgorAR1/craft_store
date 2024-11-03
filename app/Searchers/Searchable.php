@@ -2,7 +2,7 @@
 
 namespace App\Searchers;
 
-use App\Contracts\Searcher;
+use App\Contracts\SearcherEngine;
 use App\Observers\IndexingObserver;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -30,9 +30,9 @@ trait Searchable
         return collect($this)->only($this->searchableProperty);
     }
 
-    public function searchUsing(): Searcher
+    public function searchUsing(): SearcherEngine
     {
-        return app(Searcher::class);
+        return app(SearcherEngine::class);
     }
 
     public function makeSearchable(): void
