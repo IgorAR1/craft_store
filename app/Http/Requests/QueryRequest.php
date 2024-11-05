@@ -15,17 +15,18 @@ class QueryRequest extends FormRequest
             'search' => ['string'],
             'sort' => ['nullable', 'string'],
 
-            'filter' => ['array'],
-            'filter.*' => ['array'],
-            'filter.*.*' => ['string'],
+            'filter' => 'array',
+            'filter.*' => ['string'],
+//            'filter.*.*' => ['string'],
         ];
     }
-    public function getFilterQueryProperty()
+    public function getFilterQueryProperties()
     {
+//        return collect($this->input('filter'))->keys();
         return collect($this->input('filter'))->keys();
 
     }
-    public function getFilterValues(string $property): array|string
+    public function getFilterValues(string $property)
     {
         return collect($this->input('filter'))->get($property);
     }

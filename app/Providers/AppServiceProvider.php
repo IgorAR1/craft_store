@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\SearcherEngine;
+use App\Facades\FilterFactory;
 use App\Filters\QueryFilter;
 use App\Filters\QueryFilterExact;
 use App\Searchers\ElasticSearch\ElasticSearchConnection;
@@ -20,12 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(QueryFilter::class,QueryFilterExact::class);
+//        $this->app->bind(QueryFilter::class,QueryFilterExact::class);
 
 //        $this->app->bind('log',ActivityLogger::class);
 //        $this->app->bind(Searcher::class,ElasticSearcher::class);
         $this->app->singleton(SearcherEngine::class,ElasticSearcherEngine::class);
-
+        $this->app->bind('filterFactory', FilterFactory::class);
         $this->app->bind('elasticsearch',Client::class);
         $this->app->bind(Sorter::class,QuerySorter::class);
         $this->app->bind(Client::class,fn() =>

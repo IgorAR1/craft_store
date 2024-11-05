@@ -11,7 +11,6 @@ trait Searchable
     public static function bootSearchable(){
 
         static::observe(new IndexingObserver());
-
     }
     public function scopeSearch(Builder $builder,string $query): Builder
     {
@@ -63,5 +62,4 @@ trait Searchable
     {
         return $this->searchableProperty;
     }
-
 }

@@ -2,22 +2,27 @@
 
 namespace App\Services;
 
+use App\Enums\SqlOperators;
+use App\Filters\FilterFactory;
 use App\Http\Requests\QueryRequest;
 use App\Models\Product;
 
 class ProductService
 {
-    public function __construct(readonly QueryRequest $queryRequest)
+    public function __construct(readonly QueryRequest $queryRequest,readonly FilterFactory $filterFactory)
     {
     }
 
     public function getProductsForView()
     {
+        $filterFactory = $this->filterFactory;
+
         return Product::search($this->queryRequest->getSearchQuery())
-            ->filter(allowedFields: [
-                'description',
-                'categories.title',
-                'title'])
+            ->filter([
+                'price' => $filterFactory->createExactFilter(),
+                'price_min' => $filterFactory->createRangeFilter(SqlOperators::GREATER_THAN),
+                'price_max' => $filterFactory->createRangeFilter(SqlOperators::LESS_THAN),
+            ])
             ->sort('description',
                 'categories',
                 'title')

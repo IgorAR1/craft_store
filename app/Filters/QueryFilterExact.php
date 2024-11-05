@@ -2,21 +2,16 @@
 
 namespace App\Filters;
 
+use App\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
-final class QueryFilterExact extends QueryFilter
+final class QueryFilterExact implements Filter
 {
-    public function filter(Builder $builder,string $property ,array|string $values): void
+    public function filter(Builder $builder,string $property ,array $values): void
     {
-        if (is_array($values)) {
-            foreach ($values as $value) {
-                $builder->where($property, 'LIKE', '%' . $value . '%');
-            }
-
-            return;
+        foreach ($values as $value) {
+            $builder->where($property, 'LIKE', '%' . $value . '%');
         }
-
-        $builder->where($property, 'LIKE', '%' . $values . '%');
     }
 
 //    protected function isRelations(Builder $builder,string $property): bool
