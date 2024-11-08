@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sorters;
+namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 

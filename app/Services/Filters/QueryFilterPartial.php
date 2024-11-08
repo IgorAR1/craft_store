@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filters;
+namespace App\Services\Filters;
 
 use App\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
-final class QueryFilterExact implements Filter
+final class QueryFilterPartial implements Filter
 {
     public function filter(Builder $builder,string $property ,array $values): void
     {

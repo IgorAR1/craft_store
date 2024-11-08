@@ -3,14 +3,11 @@
 namespace App\Providers;
 
 use App\Contracts\SearcherEngine;
+use App\Contracts\Sorter;
 use App\Facades\FilterFactory;
-use App\Filters\QueryFilter;
-use App\Filters\QueryFilterExact;
-use App\Searchers\ElasticSearch\ElasticSearchConnection;
-use App\Searchers\ElasticSearch\ElasticSearcherEngine;
-use App\Searchers\EloquentSearcherEngine;
-use App\Sorters\QuerySorter;
-use App\Sorters\Sorter;
+use App\Services\Searchers\ElasticSearch\ElasticSearchConnection;
+use App\Services\Searchers\ElasticSearch\ElasticSearcherEngine;
+use App\Services\Sorters\QuerySorter;
 use Elastic\Elasticsearch\Client;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-//        $this->app->bind(QueryFilter::class,QueryFilterExact::class);
+//        $this->app->bind(QueryFilter::class,QueryFilterPartial::class);
 
 //        $this->app->bind('log',ActivityLogger::class);
 //        $this->app->bind(Searcher::class,ElasticSearcher::class);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Searchers\ElasticSearch;
+namespace App\Services\Searchers\ElasticSearch;
 
 use App\Contracts\SearcherEngine;
 use Elastic\Elasticsearch\Client;

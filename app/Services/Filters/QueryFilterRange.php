@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filters;
+namespace App\Services\Filters;
 
 use App\Contracts\Filter;
 use App\Enums\SqlOperators;
-use App\Http\Requests\QueryRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 

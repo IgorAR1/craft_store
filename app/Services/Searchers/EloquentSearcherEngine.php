@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Searchers;
+namespace App\Services\Searchers;
 
 use App\Contracts\SearcherEngine;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 class EloquentSearcherEngine implements SearcherEngine
 {

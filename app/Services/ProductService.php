@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Enums\SqlOperators;
-use App\Filters\FilterFactory;
+use App\Factories\FilterFactory;
 use App\Http\Requests\QueryRequest;
 use App\Models\Product;
 

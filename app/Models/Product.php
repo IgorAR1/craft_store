@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\Filters\Filterable;
-use App\Searchers\Searchable;
-use App\Sorters\Sortable;
-use Illuminate\Database\Eloquent\Builder;
+use App\Traits\Filterable;
+use App\Traits\Searchable;
+use App\Traits\Sortable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

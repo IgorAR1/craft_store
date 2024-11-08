@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User;
+namespace App\Traits;
 
 trait Bannable
 {

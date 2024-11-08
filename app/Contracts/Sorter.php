@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sorters;
+namespace App\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 

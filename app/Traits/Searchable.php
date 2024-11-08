@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Searchers;
+namespace App\Traits;
 
 use App\Contracts\SearcherEngine;
 use App\Observers\IndexingObserver;

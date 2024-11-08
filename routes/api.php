@@ -6,6 +6,7 @@ use App\Http\Controllers\API\UserBlockListController;
 use App\Http\Controllers\Api\Cart\AddToCartController;
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\CreateGuestUuid;
+use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,11 @@ Route::prefix('v1')->group(function(){
             Route::delete('{user}',[UserBlockListController::class,'unbanUser']);
         });
 
+        Route::group(['prefix'=> '/files'],function (){
+            Route::group(['prefix'=>'images'],function (){
+                Route::apiResource('',ImagesController::class);
+            });
+        });
 //    });
 
     Route::group(['middleware' =>'api:sanctum'],function (){});

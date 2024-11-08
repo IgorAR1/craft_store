@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Sorters;
+namespace App\Services\Sorters;
 
+use App\Contracts\Sorter;
 use App\Exceptions\InvalidFilterName;
 use App\Http\Requests\QueryRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,7 +16,7 @@ class QuerySorter implements Sorter
     public function sort(Builder $builder): void
     {
         $direction = $this->request->getSortDirection();
-        $this->request->getSortProperty()->each(fn ($property) =>
+        $this->request->getSortProperties()->each(fn ($property) =>
             $this->sortBy($builder,$property,$direction));
     }
 

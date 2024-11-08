@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Filters;
+namespace App\Services\Filters;
 
 use App\Contracts\Filter;
-use App\Exceptions\FilterUndefined;
 use App\Exceptions\InvalidFilterName;
+use App\Factories\FilterFactory;
 use App\Http\Requests\QueryRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class QueryFilter
+class QueryFilters
 {
-    public array $allowedFields = [];
+    public array $filters = [];
 
     public function __construct(
         protected readonly QueryRequest $request,
@@ -46,39 +47,21 @@ class QueryFilter
 //        });
 //    }
 
-    final public function apply(Builder $builder, array $allowedFields): void
+    public function apply(Builder $builder, array $allowedFilters): void
     {
-        if(empty($allowedFields))
+        $requestedFilters = $this->request->getFilterQueryProperties();
+
+        if(empty($allowedFilters) || $requestedFilters->isEmpty())
         {
             return;
         }
 
-        foreach ($allowedFields as $property => $filter){
-          if (! $filter instanceof Filter) {
-              $this->allowedFields[$filter] = $this->factory->createExactFilter();
-          }
-          else $this->allowedFields[$property] = $filter;
-        }
+        $this->filters = $allowedFilters;
 
-//        $this->allowedFields = $allowedFields;
+        $this->ensureFieldsIsFilterable($requestedFilters);
 
-//        $this->ensureFieldsIsFilterable();
-//        foreach ($allowedFields as $field){
-//            if (is_array($field)) {
-//                $property = $field[1];
-//
-////                $this->ensureFieldIsFilterable($property);
-//
-//                $filter = $this->factory->createRangeFilter(SqlOperators::GREATER_THAN);
-//                $values = $this->request->getFilterValues($field[1]);
-//
-//                dd([$filter,$values]);
-//            }
-
-        $this->request->getFilterQueryProperties()->each(function ($property) use ($builder)
+        $requestedFilters->each(function ($property) use ($builder)
         {
-            $this->ensureFieldIsFilterable($property);
-
             $values = $this->resolveQueryValues($property);
 
             $filter = $this->filterUsing($property);
@@ -116,10 +99,10 @@ class QueryFilter
 //        });
     }
 
+
     private function filterUsing(string $name): Filter
     {
-        return $this->allowedFields[$name];
-//        return $this->factory->createFilter($this->allowedFields[$name]);
+        return $this->filters[$name];
     }
 
     private function resolveQueryValues(string $property): array
@@ -127,19 +110,16 @@ class QueryFilter
         return explode(',',$this->request->getFilterValues($property));
     }
 
-    /**
-     * @throws InvalidFilterName
-     */
-    private function ensureFieldIsFilterable(string $field): void
-    {
-        $allowedFields = array_keys($this->allowedFields);
+//    private function ensureFieldIsFilterable(string $field): void
+//    {
+//        $allowedFields = array_keys($this->filters);
+//
+//        if (! in_array($field,$allowedFields)){
+//            throw new InvalidFilterName('Invalid filter  name');
+//        }
+//    }
 
-        if (! in_array($field,$allowedFields)){
-            throw new InvalidFilterName('Invalid filter  name');
-        }
-    }
-
-    final protected function isRelations(Builder $builder,string $property): bool
+    protected function isRelations(Builder $builder,string $property): bool
     {
         if(! Str::contains($property,'.')){
             return false;
@@ -150,7 +130,7 @@ class QueryFilter
         return method_exists($builder->getModel(),$relationship);
     }
 
-    final protected function withRelationship(Filter $filter,Builder $builder,string $property,array $values): Builder
+    protected function withRelationship(Filter $filter,Builder $builder,string $property,array $values): Builder
     {
         $parts = explode('.',$property);
 
@@ -160,5 +140,17 @@ class QueryFilter
         return $builder->whereHas($relation,function (Builder $builder) use ($values,$property,$filter){
             $filter->filter($builder,$property,$values);
         });
+    }
+
+    /**
+     * @throws InvalidFilterName
+     */
+    private function ensureFieldsIsFilterable(Collection $requestedFilters): void
+    {
+        $allowedFilters = array_keys($this->filters);
+
+        if ($requestedFilters->intersect($allowedFilters)->isEmpty()){
+            throw new InvalidFilterName('Invalid filter  name');
+        }
     }
 }

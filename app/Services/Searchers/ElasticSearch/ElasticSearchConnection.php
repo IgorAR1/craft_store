@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Searchers\ElasticSearch;
+namespace App\Services\Searchers\ElasticSearch;
 
+use App\Factories\ElasticSearchFactory;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 
 class ElasticSearchConnection

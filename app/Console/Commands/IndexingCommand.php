@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\SearcherEngine;
 use App\Jobs\IndexingJob;
-use App\Searchers\Searchable;
+use App\Traits\Searchable;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
