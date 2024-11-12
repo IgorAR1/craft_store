@@ -15,7 +15,6 @@ trait Filterable
      */
     public function scopeFilter(Builder $builder, array $allowedFilters = []):Builder
     {
-
         $queryFilter = app(QueryFilters::class);
 
         foreach ($allowedFilters as $property => $filter){

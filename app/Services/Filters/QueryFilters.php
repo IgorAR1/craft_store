@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 
 class QueryFilters
 {
-    public array $filters = [];
+    private array $filters = [];
 
     public function __construct(
         protected readonly QueryRequest $request,
@@ -23,29 +23,6 @@ class QueryFilters
     /**
      * @throws InvalidFilterName
      */
-//    final public function apply(Builder $builder, array $allowedFields): void
-//    {
-//        if(empty($allowedFields))
-//            {
-//                return;
-//            }
-//
-//        $this->allowedFields = $allowedFields;
-//
-//        $this->request->getFilterQueryProperties()->each(function ($property) use ($builder)
-//        {
-//            $this->ensureFieldIsFilterable($property);
-//
-//            $values = $this->request->getFilterValues($property);
-//
-//            if ($this->isRelations($builder,$property)){
-//                $this->withRelationship($builder,$property,$values);
-//
-//                return;
-//            }
-//            $this->filter($builder,$property,$values);
-//        });
-//    }
 
     public function apply(Builder $builder, array $allowedFilters): void
     {
@@ -71,32 +48,9 @@ class QueryFilters
 
                 return;
             }
-
             $filter->filter($builder,$property,$values);
         });
 
-//            if ($this->isRelations($builder,$field)){
-//                $this->withRelationship($builder,$field,$values);
-//
-//                return;
-//            }
-//            $filter->filter($builder,$field,$values);
-//        }
-//        $this->allowedFields = $allowedFields;
-//
-//        $this->request->getFilterQueryProperties()->each(function ($property) use ($builder)
-//        {
-//            $this->ensureFieldIsFilterable($property);
-//
-//            $values = $this->request->getFilterValues($property);
-//
-//            if ($this->isRelations($builder,$property)){
-//                $this->withRelationship($builder,$property,$values);
-//
-//                return;
-//            }
-//            $this->filter($builder,$property,$values);
-//        });
     }
 
 
@@ -109,15 +63,6 @@ class QueryFilters
     {
         return explode(',',$this->request->getFilterValues($property));
     }
-
-//    private function ensureFieldIsFilterable(string $field): void
-//    {
-//        $allowedFields = array_keys($this->filters);
-//
-//        if (! in_array($field,$allowedFields)){
-//            throw new InvalidFilterName('Invalid filter  name');
-//        }
-//    }
 
     protected function isRelations(Builder $builder,string $property): bool
     {
@@ -152,5 +97,24 @@ class QueryFilters
         if ($requestedFilters->intersect($allowedFilters)->isEmpty()){
             throw new InvalidFilterName('Invalid filter  name');
         }
+    }
+
+    //Или так?Минус OCP получается
+    private function filterExactly(Builder $builder,string $property ,array $values): \Closure
+    {
+        return function () use ($builder,$property,$values){
+            foreach ($values as $value) {
+                $builder->where($property, $value);
+            }
+        };
+    }
+
+    private function filterPartial(Builder $builder,string $property ,array $values): \Closure
+    {
+        return function () use ($builder,$property,$values){
+            foreach ($values as $value) {
+                $builder->where($property, 'LIKE', '%' . $value . '%');
+            }
+        };
     }
 }

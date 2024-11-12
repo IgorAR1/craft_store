@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Contracts\SearcherEngine;
 use App\Observers\IndexingObserver;
 use Illuminate\Database\Eloquent\Builder;
+use function PHPUnit\Framework\isEmpty;
 
 trait Searchable
 {
@@ -15,6 +16,15 @@ trait Searchable
     public function scopeSearch(Builder $builder,string $query): Builder
     {
         $result = $this->searchUsing()->search($query, $builder);
+
+        return $this->addResultToQuery($result, $builder);
+    }
+
+    private function addResultToQuery(array $result, Builder $builder): Builder
+    {
+        if (empty($result)){
+            return $builder;
+        }
 
         return $builder->whereIn('id',$result);
     }
