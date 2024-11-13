@@ -9,9 +9,9 @@ use App\Services\Uploaders\ImageAdder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ImagesController extends Controller
+class ImageProductController extends Controller
 {
-    public function __construct(private ImageAdder $imageAdder)
+    public function __construct(readonly ImageAdder $imageAdder)
     {
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\InvalidFilterName;
+use App\Exceptions\InvalidFilter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 

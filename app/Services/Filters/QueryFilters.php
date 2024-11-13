@@ -3,7 +3,7 @@
 namespace App\Services\Filters;
 
 use App\Contracts\Filter;
-use App\Exceptions\InvalidFilterName;
+use App\Exceptions\InvalidFilter;
 use App\Factories\FilterFactory;
 use App\Http\Requests\QueryRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,7 +21,7 @@ class QueryFilters
     )
     {}
     /**
-     * @throws InvalidFilterName
+     * @throws InvalidFilter
      */
 
     public function apply(Builder $builder, array $allowedFilters): void
@@ -40,6 +40,7 @@ class QueryFilters
         $requestedFilters->each(function ($property) use ($builder)
         {
             $values = $this->resolveQueryValues($property);
+//            $values = $this->request->getFilterValues($property);
 
             $filter = $this->filterUsing($property);
 
@@ -48,6 +49,7 @@ class QueryFilters
 
                 return;
             }
+
             $filter->filter($builder,$property,$values);
         });
 
@@ -88,14 +90,14 @@ class QueryFilters
     }
 
     /**
-     * @throws InvalidFilterName
+     * @throws InvalidFilter
      */
     private function ensureFieldsIsFilterable(Collection $requestedFilters): void
     {
         $allowedFilters = array_keys($this->filters);
 
-        if ($requestedFilters->intersect($allowedFilters)->isEmpty()){
-            throw new InvalidFilterName('Invalid filter  name');
+        if ($requestedFilters->diff($allowedFilters)->isNotEmpty()) {
+            throw new InvalidFilter('Invalid filter name');
         }
     }
 

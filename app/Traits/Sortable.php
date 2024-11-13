@@ -2,14 +2,14 @@
 
 namespace App\Traits;
 
-use App\Contracts\Sorter;
+use App\Services\Sorters\Sorter;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Sortable
 {
-    public function scopeSort(Builder $builder,string $direction):Builder
+    public function scopeSort(Builder $builder,array $allowedSortField):Builder
     {
-        (app(Sorter::class))->sort($builder);
+        (app(Sorter::class))->sort($builder,$allowedSortField);
 
         return $builder;
     }

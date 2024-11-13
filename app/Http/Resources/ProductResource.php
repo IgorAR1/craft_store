@@ -19,7 +19,7 @@ class ProductResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
-            'img' => $this->img_url,
+            'img' => $this->image->pluck('file_path'),
             'quantity' => $this->quantity,
             'color' => $this->color,
             'categories' => $this->whenLoaded('categories',CategoryResource::collection($this->categories))

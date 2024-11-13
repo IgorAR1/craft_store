@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\SearcherEngine;
-use App\Contracts\Sorter;
+use App\Services\Sorters\Sorter;
 use App\Facades\FilterFactory;
 use App\Services\Searchers\ElasticSearch\ElasticSearchConnection;
 use App\Services\Searchers\ElasticSearch\ElasticSearcherEngine;

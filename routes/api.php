@@ -6,8 +6,9 @@ use App\Http\Controllers\Api\UserBlockListController;
 use App\Http\Controllers\Api\Cart\AddToCartController;
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\CreateGuestUuid;
-use App\Http\Controllers\ImagesController;
+use App\Http\Controllers\ImageProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UploadImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Cart\ChangeCartProductController;
@@ -43,8 +44,8 @@ Route::prefix('v1')->group(function(){
 //    });
 //    Route::group(['middleware'=>'admin'],function (){
     Route::group(['prefix'=>'products/{product}/images'],function (){
-        Route::post('/',[ImagesController::class,'store']);
-        Route::post('{image}/data',[ImagesController::class,'upload'])->name('images.upload');
+        Route::post('/',[ImageProductController::class,'store']);
+        Route::post('{image}/data',[ImageProductController::class,'upload'])->name('images.upload');
     });
         Route::apiResource('/products',ProductController::class);
         Route::apiResource('/categories',CategoryController::class);
@@ -55,6 +56,9 @@ Route::prefix('v1')->group(function(){
             Route::delete('{user}',[UserBlockListController::class,'unbanUser']);
         });
 
+        Route::prefix('images')->group(function(){
+            Route::post('/',[UploadImageController::class,'store']);
+        });
 //        Route::group(['prefix'=> '/files'],function (){
 //            Route::group(['prefix'=>'images'],function (){
 //                Route::apiResource('',ImagesController::class);

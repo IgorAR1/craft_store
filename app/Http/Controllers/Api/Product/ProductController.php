@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\File;
 use App\Models\Product;
 use App\Services\ProductService;
+use App\Services\Uploaders\ImageAdder;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function __construct(private readonly ProductService $productService)
+    public function __construct(private readonly ProductService $productService,
+    readonly ImageAdder $imageAdder,)
     {
     }
 
@@ -29,21 +33,32 @@ class ProductController extends Controller
 
     public function store(ProductCreateRequest $request){
 
-        dd(request()->allFiles());
         $data = $request->validated();
 
-        $product = new Product();
+        $product = DB::transaction(function () use ($data) {
 
-        $product->title = $data['title'];
-        $product->description = $data['description'] ?? null;
-        $product->price = $data['price'] ?: null;
-        $product->img_url = $data['img_url'] ?? null;
-        $product->quantity = $data['quantity'] ?: null;
-        $product->color = $data['color'] ?: null;
-        $product->save();
+            $product = new Product();
 
-        $product->categories()->attach($data['categories']);
+            $product->title = $data['title'];
+            $product->description = $data['description'] ?? null;
+            $product->price = $data['price'] ?: null;
+//            $product->img_url = $data['img_url'] ?? null;
+            $product->quantity = $data['quantity'] ?: null;
+            $product->color = $data['color'] ?: null;
+            $product->save();
 
+            $product->categories()->attach($data['categories']);
+///////////////////////////////////////
+            $imagesIds = $data['images'] ?? [];
+            $images = File::query()->findMany($imagesIds);
+            $this->imageAdder->setModel($product);
+            $images->each(function (File $file) use ($product) {
+                $this->imageAdder->addImage($file);
+            });
+
+            return $product;
+        });
+//////////////////////////////////
         return response(new ProductResource($product->load('categories')),201);
     }
 
@@ -54,7 +69,7 @@ class ProductController extends Controller
         $product->title = array_key_exists('title',$data) ?  $data['title'] : $product->title;
         $product->description = array_key_exists('description',$data) ? $data['description'] : $product->description;
         $product->price = array_key_exists('price',$data) ? $data['price'] : $product->price;
-        $product->img_url = array_key_exists('img_url',$data) ? $data['img_url'] : $product->img_url;
+//        $product->img_url = array_key_exists('img_url',$data) ? $data['img_url'] : $product->img_url;
         $product->quantity = array_key_exists('quantity',$data) ? $data['quantity'] : $product->quantity;
         $product->color = array_key_exists('color',$data) ? $data['color'] : $product->color;
         $product->save();

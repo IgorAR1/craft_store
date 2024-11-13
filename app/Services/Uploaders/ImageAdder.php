@@ -7,25 +7,31 @@ use App\Models\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-abstract class ImageAdder
+class ImageAdder
 {
     private UploadedFile $uploadedFile;
     private HasImage $model;
     private string $pathToFile;
     private string $fileName;
     private string $fileType;
+    private string $fileHashName;
 
     public function setUploadedFile(UploadedFile $uploadedFile): self
     {
         $this->uploadedFile = $uploadedFile;
-
-        $this->pathToFile = $uploadedFile->getPath().'/'.$uploadedFile->getFilename();
         $this->fileName = $uploadedFile->getClientOriginalName();
         $this->fileType = $uploadedFile->getClientMimeType();
+        $this->fileHashName = $uploadedFile->hashName();
 
         return $this;
     }
 
+    public function setUploadPath(string $uploadPath): self
+    {
+        $this->pathToFile = $uploadPath;
+
+        return $this;
+    }
     public function setModel(HasImage $model): self
     {
         $this->model = $model;
@@ -39,34 +45,26 @@ abstract class ImageAdder
 
         $file->storage_type = 'public';
 
-        $this->model->image()->save($file);
+        $file->file_name = $this->fileName;
+        $file->file_type = $this->fileType;
+        $file->file_path = $this->pathToFile .'/'.$this->fileHashName;
 
-        $file->file_path = $this->determinePath($file);
+        $file->save();
 
         return $file;
     }
 
     public function addImage(File $file): void
     {
-        $file->file_name = $this->fileName;
-        $file->file_type = $this->fileType;
-
-        $file->save();
-
-        $this->addImageToDisk();
+        $this->model->image()->save($file);
     }
 
-    public function addImageToDisk(): void
+    public function addImageToDisk(): bool
     {
-        Storage::disk('public')->putFile($this->getStorageDirectory(), $this->uploadedFile);
+        return Storage::disk('public')->putFile($this->pathToFile, $this->uploadedFile);
     }
 
-    private function getStorageDirectory(): string// полная шляпа но пока так
-    {
-        return "images/{$this->model->id}";
-    }
-
-    private function determinePath(File $file): string
+    private function determineLink(File $file): string
     {
         return request()->path().$file->id.'/'.'file';
     }

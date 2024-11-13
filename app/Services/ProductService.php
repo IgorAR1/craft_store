@@ -18,14 +18,16 @@ class ProductService
         $filterFactory = $this->filterFactory;
 
         return Product::search($this->queryRequest->getSearchQuery())
-            ->filter([
+            ->filter([//Мб через свитчи в фабрике//Фабрику в фасад еще можно
                 'price' => $filterFactory->createExactFilter(),
                 'price_min' => $filterFactory->createRangeFilter(SqlOperators::GREATER_THAN),
                 'price_max' => $filterFactory->createRangeFilter(SqlOperators::LESS_THAN),
             ])
-            ->sort('description',
+            ->sort([
+                'description',
                 'categories',
-                'title')
+                'title'
+            ])
             ->paginate(10);
     }
 }
