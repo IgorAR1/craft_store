@@ -1,0 +1,27 @@
+{
+    "deliveryAddress":{
+        "country" : "Russia",
+        "region" : "Kr kray",
+        "city" : "Krasnodar",
+        "district" : "South",
+        "street" : "Krasnaya",
+        "building" : "23"
+    },
+
+    "products":[{
+        "product_id" : "9d70dcc2-04d8-4ca2-a5ed-f1c26a0f1069",
+        "quantity" : "23"
+    },
+    {
+        "product_id" : "9d70dcc2-567b-4666-8e42-0f5efacf603d",
+        "quantity" : "3"
+    }
+    ],
+
+    "deliveryType" : "self",
+
+    "payment":{
+        "paymentType" : "card",
+        "paymentId" : "1"
+    }
+}
