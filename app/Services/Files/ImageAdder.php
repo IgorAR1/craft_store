@@ -59,9 +59,10 @@ class ImageAdder
         $this->model->image()->save($file);
     }
 
-    public function addImageToDisk(): bool
+    //Вынести в другой класс?
+    public function addImageToDisk(string $disk = 'public'): bool
     {
-        return Storage::disk('public')->putFile($this->pathToFile, $this->uploadedFile);
+        return Storage::disk($disk)->putFile($this->pathToFile, $this->uploadedFile);
     }
 
     private function determineLink(File $file): string
