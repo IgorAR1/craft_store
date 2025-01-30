@@ -39,8 +39,8 @@ Route::prefix('v1')->group(function(){
     });
 
 //    Route::group(['prefix' => 'order'],function (){
-        Route::apiResource('/order',OrderController::class);
-        Route::patch('/order/{order}/status',ChangeOrderStatus::class);
+        Route::apiResource('/orders',OrderController::class)->middleware('auth:sanctum');
+        Route::patch('/orders/{order}/status',ChangeOrderStatus::class);
 //    });
 //    Route::group(['middleware'=>'admin'],function (){
     Route::group(['prefix'=>'products/{product}/images'],function (){

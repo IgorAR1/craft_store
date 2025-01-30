@@ -32,15 +32,15 @@ class CreateOrderRequest extends FormRequest
                 'deliveryAddress.street' => 'required|string',
                 'deliveryAddress.building' => 'required|string',
                 'deliveryAddress.floor' => 'sometimes|required|string',
-                'deliveryAddress.apartment_number' => 'sometimes|required|string',
+                'deliveryAddress.apartmentNumber' => 'sometimes|required|string',
 
             'products'=> 'required|array',
                 'products.*.product_id' => 'required|uuid|exists:products,id',
                 'products.*.quantity' => 'required|integer',
-            'deliveryType' => ['required','string',Rule::in(['self','courier'])],
+            'deliveryType' => ['required','string',Rule::in(['self','courier'])],//Извольте в enum
             'payment' => 'array',
-                'payment.paymentType' => 'string',
-                'payment.paymentId' => 'int',
+                'payment.paymentType' => 'required|string',//Блять тоже в енам, че вообще творится
+                'payment.paymentId' => 'required|int',
         ];
     }
 }

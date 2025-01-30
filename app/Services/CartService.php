@@ -73,7 +73,8 @@ class CartService
         //     return $this->cart;
         // }
 
-        if (Cookie::has('csuid')){
+        if (Cookie::has('csuid'))
+        {
             return Cart::query()->findOrFail(Cookie::get('csuid'));//OrFail?
         }
 
@@ -84,30 +85,23 @@ class CartService
         return $this->createCart();
     }
 
-    // public function setCart(Cart $cart): void{
-    //     $this->cart = $cart;
-    // }
-
-    public function getCart(): Cart{
+    public function getCart(): Cart
+    {
         return $this->resolveCart();
     }
 
-    public function createCart(): Cart{
-
+    public function createCart(): Cart
+    {
        return Cart::create([$this->user?->id]);
-
     }
 
     // public function getCurrentProductQty(Cart $cart, string $product_id): int{
-
     //     $product = $cart->products()
     //         ->where('product_id',$product_id)
     //         ->first();
-
     //     if($product){
     //         return $product->pivot->quantity;
     //     }
-
     //     return 0;
     // }
 

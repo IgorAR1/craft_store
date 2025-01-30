@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Uploaders;
+namespace App\Services\Files;
 
 use App\Contracts\HasImage;
 use App\Models\File;
@@ -69,5 +69,4 @@ class ImageAdder
     {
         return request()->path().$file->id.'/'.'file';
     }
-
 }

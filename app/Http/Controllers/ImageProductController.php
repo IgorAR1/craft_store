@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ImageUploadRequest;
 use App\Models\File;
 use App\Models\Product;
-use App\Services\Uploaders\ImageAdder;
+use App\Services\Files\ImageAdder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +15,7 @@ class ImageProductController extends Controller
     {
     }
 
-    public function store(ImageUploadRequest $request,Product $product)
+    public function store(Product $product)
     {
         $this->imageAdder->setModel($product)->createImage();
     }
