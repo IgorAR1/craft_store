@@ -20,6 +20,9 @@ return new class extends Migration
             $table->index('cart_id','cart_product_cart_idx');
             $table->index('product_id','cart_product_product_idx');
             $table->integer('quantity')->default(1);
+            $table->float('price')->default(0);
+            $table->float('discount_amount')->default(0);
+            $table->float('total_amount')->default(0);
             $table->timestamps();
         });
     }

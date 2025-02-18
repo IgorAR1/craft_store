@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Activity;
+use App\Services\Logger\MySqlHandler;
+use App\Services\Logger\MySqlProcessor;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -92,6 +95,12 @@ return [
                 'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
+        ],
+        'mysql' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => MysqlHandler::class,
+            'table' => Activity::class
         ],
 
         'stderr' => [

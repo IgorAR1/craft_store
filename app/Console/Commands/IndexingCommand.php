@@ -38,7 +38,7 @@ class IndexingCommand extends Command
 
     public function handle(): void
     {
-        $this->info('Indexing all articles. This might take a while...');
+        $this->info('Indexing all products. This might take a while...');
 
         foreach ($this->getModels() as  $model)
         {

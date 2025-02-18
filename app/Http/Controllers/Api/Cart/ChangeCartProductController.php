@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api\Cart;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AddToCartRequest;
 use App\Http\Requests\ChangeCartProductRequest;
-use App\Http\Resources\CartProductResource;
 use App\Http\Resources\CartResource;
 use App\Models\Product;
-use App\Services\CartService;
+use App\Services\Cart\CartService;
 
 class ChangeCartProductController extends Controller
 {
@@ -21,9 +19,9 @@ class ChangeCartProductController extends Controller
         $cart = $this->service->getCart();
 
         // CartProduct::where('cart_id',$cart->id)->where('product_id',$product->id)->update(['quantity'=>$data['quantity']]);
-        
+
         // $product->cart()->updateExistingPivot($cart->id,['quantity' => $data['quantity']]);
-        $cart->products()->updateExistingPivot($product->id, ['quantity' => $data['quantity']]);
+        $cart->product()->updateExistingPivot($product->id, ['quantity' => $data['quantity']]);
 
         // $products = $cart->products();
 

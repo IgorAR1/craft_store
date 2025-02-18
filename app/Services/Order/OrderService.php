@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Order;
 
 use App\Enums\OrderStatuses;
 use App\Factories\PaymentFactory;
@@ -40,7 +40,14 @@ class OrderService
         return $order;
     }
 
-    public function updateAmount(Order $order):void {
+    public function updateAmount(Order $order): void
+    {
         $order->total_amount = $order->products()->sum('price');
     }
+
+    public function updateStatus(Order $order, string $status): void
+    {
+        $order->update(['order_status' => $status]);
+    }
+
 }

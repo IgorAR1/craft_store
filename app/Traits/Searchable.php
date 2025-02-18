@@ -15,6 +15,12 @@ trait Searchable
     }
     public function scopeSearch(Builder $builder,string $query): Builder
     {
+
+        if (empty($query)) {
+
+            return $builder;
+        }
+
         $result = $this->searchUsing()->search($query, $builder);
 
         return $this->addResultToQuery($result, $builder);

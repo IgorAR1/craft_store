@@ -12,7 +12,7 @@ class QueryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['string'],
+            'search' => ['nullable','string'],
             'sort' => ['nullable', 'string'],
 
             'filter' => 'array',

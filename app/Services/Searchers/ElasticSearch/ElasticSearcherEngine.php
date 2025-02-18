@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 
 final class ElasticSearcherEngine implements SearcherEngine
 {
-    public function __construct(public Client $elasticsearch)
+    public function __construct(readonly Client $elasticsearch)
     {}
 
     /**

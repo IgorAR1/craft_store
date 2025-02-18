@@ -22,14 +22,15 @@ class ProductUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
-            'description' => 'string',
-            'price' => 'required|integer',
-            'img_url' => 'required|url',
-            'quantity' => 'integer',
-            'color' => 'required|string',
-            'categories' => 'required|array',
-            'categories.*' => 'int|exists:categories,id'
+            'title' => 'sometimes|required|string',
+            'description' => 'sometimes|string',
+            'price' => 'sometimes|required|numeric',
+            'images' => 'sometimes|array',
+            'images.*' => 'sometimes|integer',
+            'quantity' => 'sometimes|required|integer',
+            'color' => 'sometimes|required|string',
+            'categories' => 'sometimes|required|array',
+            'categories.*' => 'sometimes|int|exists:categories,id'
         ];
     }
 }

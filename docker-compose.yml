@@ -1,6 +1,7 @@
 
 services:
     nginx:
+        container_name: nginx
         image: nginx:stable-alpine
         ports:
             - "8000:80"
@@ -11,6 +12,7 @@ services:
             - php
             - mysql
     php:
+        container_name: php
         build:
             context: ./docker/Dockerfiles
             dockerfile: php.Dockerfile
@@ -19,6 +21,7 @@ services:
         depends_on:
             -   mysql
     mysql:
+        container_name: mysql
         image: mysql:8.1
         ports:
             -  3316:3306
@@ -32,7 +35,21 @@ services:
             MYSQL_DATABASE: craft-store
             MYSQL_USER: admin
             MYSQL_PASSWORD: admin
+
+    postgres:
+        container_name: postgres
+        image: postgres:17.2
+        ports:
+            - 5432:5432
+        volumes:
+            - ./docker/postgredb/data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: craft-store
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            PGDATA: /var/lib/postgresql/data/pgdata
     elasticsearch:
+        container_name: elastic
         image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
         ports:
             -   9300:9200

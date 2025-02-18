@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Contracts\DiscountableContract;
+use App\Traits\HasDiscounts;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Order extends Model implements DiscountableContract
 {
-    use HasFactory,HasUuids;
+    use HasFactory,HasUuids,HasDiscounts;
 
     protected $guarded = [];
     public function products(){
@@ -26,4 +29,10 @@ class Order extends Model
     public function payment(){
         return $this->morphTo();
     }
+
+    public function getDiscounts(): Collection
+    {
+        // TODO: Implement getDiscounts() method.
+    }
+
 }

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api\Cart;
 
 use App\Http\Controllers\Controller;
-use App\Services\CartService;
-use Illuminate\Http\Request;
+use App\Services\Cart\CartService;
 
 class ClearCartController extends Controller
 {
@@ -13,7 +12,7 @@ class ClearCartController extends Controller
     {}
 
     public function __invoke(){
-        $this->service->getCart()->products()->sync([]);//или getCart()->delete():/
+        $this->service->getCart()->product()->sync([]);//или getCart()->delete():/
         return response('true',204);
     }
 

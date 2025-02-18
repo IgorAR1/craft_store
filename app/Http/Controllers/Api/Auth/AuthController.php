@@ -1,25 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    public function login(Request $request):Response {
-    
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-     
+    public function login(LoginRequest $request):Response {
+
         $user = User::where('email', $request->email)->first();
-     
+
         if (! $user || ! Hash::check($request->password, $user->password)) {
            return response()->json(
                 data:[
@@ -28,7 +23,7 @@ class AuthController extends Controller
                 ],
                 status:403);
         }
-     
+
         return response()->json(
             data:[
                 'status'=>'success',
@@ -38,15 +33,19 @@ class AuthController extends Controller
             ->withCookie(cookie()->forget('csuid'));
     }
 
-    public function register(Request $request):Response {
+    public function register(RegisterRequest $request):Response {
 
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-        ]);
-        
-        $user = User::create($data);
+        $data = $request->validated();
+
+        $user = User::create(
+            [
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'phone' => $data['phone'],
+            ]
+        );
 
         // return route('auth.login');
 
@@ -56,6 +55,6 @@ class AuthController extends Controller
                 'token' => $user->createToken('token')->plainTextToken
             ],
             status:200);
-        
+
     }
 }

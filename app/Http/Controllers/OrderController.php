@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\OrderStatuses;
 use App\Factories\PaymentFactory;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Resources\OrderResource;
-use App\Models\Address;
 use App\Models\Order;
-use App\Services\CartService;
-use App\Services\OrderService;
+use App\Services\Order\OrderService;
 use App\Values\OrderData;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {

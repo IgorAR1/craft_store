@@ -17,7 +17,8 @@ class CartResource extends JsonResource
         // dd($this->products()->first()->pivot->quantity);
         return [
             'id' => $this->id,
-            'products' => CartProductResource::collection($this->products),
+//            'items' => CartProductResource::collection($this->products),
+            'items' => $this->item,
         ];
     }
 }

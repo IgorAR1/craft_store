@@ -21,7 +21,8 @@ return new class extends Migration
             $table->foreign('user_id','order_user_fk')->on('users')->references('id');
             $table->foreign('shipment_address_id','order_address_fk')->on('addresses')->references('id');
             $table->string('order_status')->default(OrderStatuses::AWAITING->name);
-            $table->float('total_amount')->nullable();
+            $table->float('discounted_price');
+            $table->float('total_price')->nullable();
             $table->timestamps();
         });
     }

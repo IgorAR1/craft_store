@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->nullable();
+            $table->float('total_price')->default(0);
+            $table->float('discounted_price')->default(0);
+            $table->float('adjustments_total')->default(0);
             $table->timestamps();
         });
     }

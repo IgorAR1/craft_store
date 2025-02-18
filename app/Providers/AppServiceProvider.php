@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Contracts\SearcherEngine;
+use App\Facades\UserActivityLogger;
+use App\Services\ActivityLogger;
 use App\Services\Sorters\Sorter;
 use App\Facades\FilterFactory;
 use App\Services\Searchers\ElasticSearch\ElasticSearchConnection;
@@ -20,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
 //        $this->app->bind(QueryFilter::class,QueryFilterPartial::class);
 
-//        $this->app->bind('log',ActivityLogger::class);
+        $this->app->singleton('logactivity',ActivityLogger::class);
 //        $this->app->bind(Searcher::class,ElasticSearcher::class);
         $this->app->singleton(SearcherEngine::class,ElasticSearcherEngine::class);
         $this->app->bind('filterFactory', FilterFactory::class);
